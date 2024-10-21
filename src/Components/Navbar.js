@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 export default class Navbar extends Component {
   render() {
@@ -13,12 +13,16 @@ export default class Navbar extends Component {
           alignItems: "center",
         }}
       >
-        <Link to="/">
-          <h1>Movies App</h1>
-        </Link>
-        <Link to="/fav">
-        <h2 style={{ marginLeft: "2rem" }}>Favourites</h2></Link>
+<Link to="/" >
+<h1> MOvies App</h1>
+</Link>
+         
+     <Link to="/fav">  
+     
+        <h2 style={{ marginLeft: "2rem" }}>Favourites</h2>
+     </Link>  
       </div>
     );
   }
 }
+ 
