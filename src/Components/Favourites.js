@@ -16,13 +16,14 @@ export default class Favourites extends Component {
     //   "https://api.themoviedb.org/3/movie/popular?api_key=1749ee86927c862e6ac40360e3eb8c0d&language=en-US&page=2"
     // );
     // let data = await res.json();
-    let data = await axios.get(
-      `https://api.themoviedb.org/3/movie/popular?api_key=1749ee86927c862e6ac40360e3eb8c0d&language=en-US&page=1`
-    );
-    console.log(data.data);
-    this.setState({
-      movies: [...data.data.results],
-    });
+    // let data = await axios.get(
+    //   `https://api.themoviedb.org/3/movie/popular?api_key=1749ee86927c862e6ac40360e3eb8c0d&language=en-US&page=1`
+    // );
+    // console.log(data.data);
+    // this.setState({
+    //   movies: [...data.data.results],
+    // });
+    let data = JSON.parse(localStorage.getItem("movies"));
     let genreId = {
       28: "Action",
       12: "Adventure",
@@ -45,7 +46,7 @@ export default class Favourites extends Component {
       37: "Western",
     };
     let allGenre = [];
-    data.data.results.map((movieObj) => {
+    data.map((movieObj) => {
       if (!allGenre.includes(genreId[movieObj.genre_ids[0]])) {
         allGenre.push(genreId[movieObj.genre_ids[0]]);
       }
@@ -53,7 +54,7 @@ export default class Favourites extends Component {
     allGenre.unshift("All Genre");
     console.log(allGenre);
     this.setState({
-      movies: [...data.data.results],
+      movies: [...data],
       genre: [...allGenre],
     });
   }
@@ -86,9 +87,18 @@ export default class Favourites extends Component {
       10752: "War",
       37: "Western",
     };
+
+    let filteredMovies = [];
+    if (this.state.currGenre != "All Genre") {
+      filteredMovies = this.state.movies.filter(
+        (movieObj) => genreId[movieObj.genre_ids[0]] == this.state.currGenre
+      );
+    }
+    else filteredMovies = this.state.movies;
+
     return (
       <div className="row">
-        <div className="col-3 p-5 favourites-list">
+        <div className="col-3 p-5 ">
           <ul className="list-group">
             {this.state.genre.map((genre) => {
               return this.state.currGenre == genre ? (
@@ -99,17 +109,19 @@ export default class Favourites extends Component {
                 </li>
               );
             })}
+
+
             {/* <li class="list-group-item active">All Genre</li>
             <li class="list-group-item">Fantcy</li>
             <li class="list-group-item">Action</li>
             <li class="list-group-item">Animation</li> */}
           </ul>
         </div>
-        <div className="col p-5 favourites-table">
-          <div>
+        <div className="col p-5 ">
+          <div className="row">
             <input
               type="text"
-              className="col-6 mr-1"
+              className="col-6"
               placeholder="Search"
             ></input>
             <input
